@@ -1,3 +1,5 @@
+import { Droppable, Draggable } from "react-beautiful-dnd";
+
 export default function Bill(props){
     return (
     <div>
@@ -15,6 +17,29 @@ export default function Bill(props){
                 <td>250</td>
                 <td>
                     {/**Drop participants here */}
+                    <Droppable droppableId="droppable2">
+                    {(provided, snapshot) => (
+                        <ul ref={provided.innerRef}>
+                            {props?.billParticipants.map((item, index) => (
+                                <Draggable
+                                    key={item.id}
+                                    draggableId={item.id}
+                                    index={index}>
+                                    {(provided, snapshot) => (
+                                        <li
+                                            ref={provided.innerRef}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            >
+                                            {item.name}
+                                        </li>
+                                    )}
+                                </Draggable>
+                            ))}
+                            <li>{provided.placeholder}</li>
+                        </ul>
+                    )}
+                </Droppable>
                 </td>
             </tr>
             <tr>
