@@ -3,7 +3,7 @@ import { Draggable, Droppable} from "react-beautiful-dnd";
 export default function Participants(props){
     return (
     <div>
-            <Droppable droppableId="droppable">
+            <Droppable droppableId="participants">
                 {(provided, snapshot) => (
                     <ul {...provided.droppableProps} ref={provided.innerRef}>
                     {props?.participants.map((participant, index) => (
