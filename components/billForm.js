@@ -1,37 +1,49 @@
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { Droppable, Draggable } from "react-beautiful-dnd";
+//import { useEffect } from "react";
 export default function BillForm(props) {
-    const { register, control, handleSubmit, reset } = useForm({
+  /* useEffect(() => {
+    console.log("bill prop changed");
+    console.log(props.bill);
+  },[props.bill]); */
+  
+    const { register, control, handleSubmit, reset, watch } = useForm({
         defaultValues: {
-          billItem: [{ itemName: "", itemQuantity: 0, itemUnitPrice: 0 }]
+          billItems: props.bill
         }
       });
-      const { fields, append, remove } = useFieldArray({ control, name: "billItem" });
-      const onSubmit = (data) => console.log("data", data);
+      const { fields, append, remove } = useFieldArray({ control, name: "billItems" });
+      const watchBillItems = watch("billItems");
+      const controlledFields = fields.map((field, index) => {
+        return {
+          ...field,
+          ...watchBillItems[index]
+        };
+      });
+      const onChangeHandler = (e) => {
+        //console.log(watchBillItems);
+        props.setBill(watchBillItems);
+      };
     
       return (
-        <form onSubmit={handleSubmit(onSubmit)}>         
+        <form onChange={onChangeHandler}>         
           <ul>
-            {fields.map((item, index) => (
+            {controlledFields.map((item, billIndex) => (
                 <li key={item.id}>
-                  <input {...register(`billItem.${index}.itemName`)} />
-                  <input {...register(`billItem.${index}.itemQuantity`)} />
-                  <input {...register(`billItem.${index}.itemUnitPrice`)} />
+                  <Controller render={({ field }) => <input {...field} />} name={`billItems.${billIndex}.itemName`} control={control}/>
+                  <Controller render={({ field }) => <input {...field} />} name={`billItems.${billIndex}.quantity`} control={control}/>
+                  <Controller render={({ field }) => <input {...field} />} name={`billItems.${billIndex}.unitPrice`} control={control}/>
                   {/**TODO: Track participants for each Bill Item and calculate each participant's required contribution*/}
-                  <Droppable droppableId={""+index}>
+                  <Droppable droppableId={""+billIndex}>
                     {(provided, snapshot) => (
                         <ul ref={provided.innerRef}>
-                            {props?.bill[index].participants.map((item, index) => (
+                            {props?.bill[billIndex]?.participants?.map((item, index) => (
                                 <Draggable
                                     key={item.id}
-                                    draggableId={index+"_"+item.id}
+                                    draggableId={billIndex+"_"+index+"_"+item.id+"_"+item.name}
                                     index={index}>
                                     {(provided, snapshot) => (
-                                        <li
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            >
+                                        <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                                             {item.name}
                                         </li>
                                     )}
@@ -41,21 +53,19 @@ export default function BillForm(props) {
                         </ul>
                     )}
                 </Droppable>
-                  <button type="button" onClick={() => remove(index)}>Delete</button>
+                  <button type="button" onClick={() => remove(billIndex)}>Delete</button>
                 </li>
               )
             )}
           </ul>
           <section>
-            <button type="button" onClick={() => append({ itemName: "", itemQuantity: 0, itemUnitPrice: 0 })}>
+            <button type="button" onClick={() => append({ itemName: "", quantity: 0, unitPrice: 0, participants:[] })}>
               Add Row
             </button>
-            <button type="button" onClick={() => reset({ billItem: [{ itemName: "", itemQuantity: 0, itemUnitPrice: 0 }] })}>
+            <button type="button" onClick={() => reset({ billItem: [{ itemName: "", quantity: 0, unitPrice: 0, participants:[] }] })}>
               Reset
             </button>
           </section>
-    
-          <input type="submit" />
         </form>
       );
     }

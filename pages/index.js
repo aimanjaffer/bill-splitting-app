@@ -4,31 +4,35 @@ import { useState, useEffect } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import BillForm from '../components/billForm';
 const initialParticipants = [
-    { id: "0", name: "Aiman" },
-    { id: "1", name: "Pee" },
-    { id: "2", name: "Vaishak" },
-    { id: "3", name: "Zakki" },
-    { id: "4", name: "Ullas" },
-    { id: "5", name: "Vivek" },
-    { id: "6",  name: "Sunad"},
-    { id: "7",  name: "Rahul" },
-    { id: "8",  name: "Vishal" },
-    { id: "9",  name: "Chandy" },
-    { id: "10", name: "BD" },
-    { id: "11", name: "Pranav" }
+    {id: "0", name: "Aiman"},
+    {id: "1", name: "Pee"},
+    {id: "2", name: "Vaishak"},
+    {id: "3", name: "Zakki"},
+    {id: "4", name: "Ullas"},
+    {id: "5", name: "Vivek"},
+    {id: "6",  name: "Sunad"},
+    {id: "7",  name: "Rahul"},
+    {id: "8",  name: "Vishal"},
+    {id: "9",  name: "Chandy"},
+    {id: "10", name: "BD"},
+    {id: "11", name: "Pranav"}
 ];
-const initialBill = [
+/* const initialBill = [
   {itemId: 0, itemName: "Biryani", unitPrice:250, quantity:2, participants:[{ id: "6",  name: "Sunad"},{  id: "7",  name: "Rahul" }]},
   {itemId: 1, itemName: "Pizza", unitPrice:200, quantity:1, participants:[{ id: "8",  name: "Vishal"},{ id: "9",  name: "Chandy"}]},
   {itemId: 2, itemName: "Burger", unitPrice:50, quantity:3, participants:[{ id: "10", name: "BD"},{ id: "11", name: "Pranav"}]}
-];
+]; */
 export default function Home() {
   const [windowReady, setWindowReady] = useState(false);
   const [participants, setParticipants] = useState(initialParticipants);
-  const [bill, setBill] = useState(initialBill);
+  const [bill, setBill] = useState([]);
   useEffect(() => {
       setWindowReady(true);
   }, []);
+  /* useEffect(()=>{
+    console.log("bill changed");
+    console.log(bill);
+  },[bill]); */
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -37,9 +41,7 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-/**
-* Moves an item from one list to another list.
-*/
+// Moves an item from one list to another list.
 const move = (source, destination, droppableSource, droppableDestination) => {
   const sourceClone = Array.from(source);
   const destClone = Array.from(destination);
@@ -128,7 +130,7 @@ const handleOnDragEnd = result => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <DragDropContext onDragEnd={handleOnDragEnd}>
-        {windowReady && bill && <BillForm bill={bill}/>}
+        {windowReady && bill && <BillForm bill={bill} setBill={setBill}/>}
         {windowReady && participants && <Participants participants={participants}/>}
       </DragDropContext>
     </div>
