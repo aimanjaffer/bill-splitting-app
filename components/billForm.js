@@ -1,17 +1,8 @@
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { Droppable, Draggable } from "react-beautiful-dnd";
-//import { useEffect } from "react";
+import { useEffect } from "react";
 export default function BillForm(props) {
-  /* useEffect(() => {
-    console.log("bill prop changed");
-    console.log(props.bill);
-  },[props.bill]); */
-  
-    const { register, control, handleSubmit, reset, watch } = useForm({
-        defaultValues: {
-          billItems: props.bill
-        }
-      });
+    const { control, watch, setValue } = useForm({ defaultValues: { billItems: props.bill } });
       const { fields, append, remove } = useFieldArray({ control, name: "billItems" });
       const watchBillItems = watch("billItems");
       const controlledFields = fields.map((field, index) => {
@@ -20,13 +11,16 @@ export default function BillForm(props) {
           ...watchBillItems[index]
         };
       });
-      const onChangeHandler = (e) => {
-        //console.log(watchBillItems);
+      useEffect(() => {
+        setValue("billItems", props.bill);
+      }, [props.bill]);
+      
+      useEffect(() => {
         props.setBill(watchBillItems);
-      };
+      }, [watchBillItems]);
     
       return (
-        <form onChange={onChangeHandler}>         
+        <form>         
           <ul>
             {controlledFields.map((item, billIndex) => (
                 <li key={item.id}>
@@ -62,9 +56,7 @@ export default function BillForm(props) {
             <button type="button" onClick={() => append({ itemName: "", quantity: 0, unitPrice: 0, participants:[] })}>
               Add Row
             </button>
-            <button type="button" onClick={() => reset({ billItem: [{ itemName: "", quantity: 0, unitPrice: 0, participants:[] }] })}>
-              Reset
-            </button>
+            <button type="button" onClick={() => setValue("billItems", [] )}>Reset</button>
           </section>
         </form>
       );
