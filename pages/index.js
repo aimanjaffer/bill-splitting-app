@@ -3,6 +3,7 @@ import Bill from '../components/bill'
 import Participants from '../components/participants'
 import { useState, useEffect } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
+import BillForm from '../components/billForm';
 const initialParticipants = [
     {
         id: "0",
@@ -128,6 +129,7 @@ const handleOnDragEnd = result => {
         {windowReady && billParticipants && <Bill billParticipants={billParticipants}/>}
         {windowReady && participants && <Participants participants={participants}/>}
       </DragDropContext>
+      <BillForm/>
     </div>
   )
 }
