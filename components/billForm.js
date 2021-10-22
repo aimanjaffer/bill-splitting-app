@@ -2,7 +2,7 @@ import { useForm, useFieldArray, Controller, useWatch } from "react-hook-form";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect } from "react";
 export default function BillForm(props) {
-    const { control, watch, setValue } = useForm({ defaultValues: { billItems: props.bill } });
+    const { control, setValue } = useForm({ defaultValues: { billItems: props.bill } });
     const { fields, append, remove } = useFieldArray({ control, name: "billItems" });
     const watchBillItems = useWatch({control, name: "billItems"});
     const controlledFields = fields.map((field, index) => {
@@ -13,9 +13,7 @@ export default function BillForm(props) {
       });
       useEffect(() => {
           props.setBill(watchBillItems);
-      }, [watchBillItems]);   
-     
-    
+      }, [watchBillItems]);
       return (
         <form>         
           <ul>
@@ -29,8 +27,8 @@ export default function BillForm(props) {
                         <ul ref={provided.innerRef}>
                             {props?.bill[billIndex]?.participants?.map((item, index) => (
                                 <Draggable
-                                    key={item.id}
-                                    draggableId={billIndex+"_"+index+"_"+item.id+"_"+item.name}
+                                    key={item.name}
+                                    draggableId={item.name+"_"+billIndex+"_"+index}
                                     index={index}>
                                     {(provided, snapshot) => (
                                         <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
