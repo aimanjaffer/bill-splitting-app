@@ -17,23 +17,42 @@ const initialParticipants = [
     {id: "10", name: "BD"},
     {id: "11", name: "Pranav"}
 ];
-/* const initialBill = [
-  {itemId: 0, itemName: "Biryani", unitPrice:250, quantity:2, participants:[{ id: "6",  name: "Sunad"},{  id: "7",  name: "Rahul" }]},
-  {itemId: 1, itemName: "Pizza", unitPrice:200, quantity:1, participants:[{ id: "8",  name: "Vishal"},{ id: "9",  name: "Chandy"}]},
-  {itemId: 2, itemName: "Burger", unitPrice:50, quantity:3, participants:[{ id: "10", name: "BD"},{ id: "11", name: "Pranav"}]}
-]; */
+
 export default function Home() {
   const [windowReady, setWindowReady] = useState(false);
   const [participants, setParticipants] = useState(initialParticipants);
   const [bill, setBill] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [contributions, setContributions] = useState({});
   useEffect(() => {
       setWindowReady(true);
   }, []);
-  /* useEffect(()=>{
-    console.log("bill changed");
-    console.log(bill);
-  },[bill]); */
+  useEffect(() => {
+    //console.log("bill changed ", bill);
+    let sum = bill.map((item) => item.quantity * item.unitPrice).reduce((prev, current) => prev + current, 0);
+    setTotal(sum);
+    let individualShareOfBillItems = bill.map((item) => (item.quantity * item.unitPrice) / (item?.participants?.length || 1));
+    let localContributions = new Map();
+    for(let index in bill){
+      let participantNames = bill[index]?.participants?.map(participant => participant.name);
+      for(let name of participantNames){
+        if(localContributions.has(name)){
+          localContributions.set(name, localContributions.get(name) + individualShareOfBillItems[index]);
+        }else{
+          localContributions.set(name, individualShareOfBillItems[index]);
+        }
+      }
+    }
+    let obj = Array.from(localContributions).reduce((obj, [key, value]) => {
+      obj[key] = value;
+      return obj;
+    }, {});
+    setContributions(obj);
+  },[bill]);
 
+  const changeBill = (value) => {
+    setBill(value);
+  };
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
@@ -130,9 +149,11 @@ const handleOnDragEnd = result => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <DragDropContext onDragEnd={handleOnDragEnd}>
-        {windowReady && bill && <BillForm bill={bill} setBill={setBill}/>}
+        {windowReady && bill && <BillForm bill={bill} setBill={changeBill}/>}
         {windowReady && participants && <Participants participants={participants}/>}
       </DragDropContext>
+      {contributions && <p>{JSON.stringify(contributions)}</p>}
+      {total && <p>{total}</p>}
     </div>
   )
 }

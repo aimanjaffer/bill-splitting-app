@@ -1,23 +1,20 @@
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { useForm, useFieldArray, Controller, useWatch } from "react-hook-form";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect } from "react";
 export default function BillForm(props) {
     const { control, watch, setValue } = useForm({ defaultValues: { billItems: props.bill } });
-      const { fields, append, remove } = useFieldArray({ control, name: "billItems" });
-      const watchBillItems = watch("billItems");
-      const controlledFields = fields.map((field, index) => {
+    const { fields, append, remove } = useFieldArray({ control, name: "billItems" });
+    const watchBillItems = useWatch({control, name: "billItems"});
+    const controlledFields = fields.map((field, index) => {
         return {
           ...field,
           ...watchBillItems[index]
         };
       });
       useEffect(() => {
-        setValue("billItems", props.bill);
-      }, [props.bill]);
-      
-      useEffect(() => {
-        props.setBill(watchBillItems);
-      }, [watchBillItems]);
+          props.setBill(watchBillItems);
+      }, [watchBillItems]);   
+     
     
       return (
         <form>         
@@ -27,7 +24,6 @@ export default function BillForm(props) {
                   <Controller render={({ field }) => <input {...field} />} name={`billItems.${billIndex}.itemName`} control={control}/>
                   <Controller render={({ field }) => <input {...field} />} name={`billItems.${billIndex}.quantity`} control={control}/>
                   <Controller render={({ field }) => <input {...field} />} name={`billItems.${billIndex}.unitPrice`} control={control}/>
-                  {/**TODO: Track participants for each Bill Item and calculate each participant's required contribution*/}
                   <Droppable droppableId={""+billIndex}>
                     {(provided, snapshot) => (
                         <ul ref={provided.innerRef}>
