@@ -13,14 +13,14 @@ export default function Participants(props){
         }
       }, [formState, reset]);
     return (
-    <div>
+    <div className="p-2 self-start bg-gray-800 rounded-lg">
             <Droppable droppableId="participants">
                 {(provided, snapshot) => (
                     <ul {...provided.droppableProps} ref={provided.innerRef}>
                     {props?.participants.map((participant, index) => (
                         <Draggable key={participant.name} draggableId={participant.name} index={index}>
                             {(provided, snapshot) => (
-                                <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>{participant.name}</li>
+                                <li className="rounded-lg hover:bg-gray-700 hover:shadow-xl text-xl text-white p-2 font-semibold" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>{participant.name}</li>
                             )}
                         </Draggable>
                     ))}
@@ -29,8 +29,8 @@ export default function Participants(props){
                 )}
             </Droppable>
             <form onSubmit={handleSubmit(formSubmissionHandler)}>
-                <input type="text" {...register("participantName", { required: true, pattern: /^[A-Za-z0-9 ]+$/i })}/>
-                <button type="submit">Add Participant</button>
+                <input autocomplete="off" className="ml-2 p-2 rounded-lg shadow-md hover:shadow-xl" type="text" {...register("participantName", { required: true, pattern: /^[A-Za-z0-9 ]+$/i })}/>
+                <button className="ml-2 bg-green-700 p-2 rounded-lg hover:bg-green-600 hover:shadow-xl text-white" type="submit">Add Participant</button>
             </form>
     </div>
     );

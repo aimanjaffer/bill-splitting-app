@@ -141,11 +141,19 @@ const handleOnDragEnd = result => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <DragDropContext onDragEnd={handleOnDragEnd}>
+        <div className="grid grid-cols-2 gap-1">
         {windowReady && bill && <BillForm bill={bill} setBill={changeBill}/>}
         {windowReady && participants && <Participants participants={participants} addParticipant={addParticipant}/>}
+        <div className="bg-gray-800 rounded-lg p-4 text-2xl text-white">
+          {total && <p>Total is: {total}</p>}
+        </div>
+        <div className="bg-gray-800 rounded-lg p-4 text-2xl text-white">
+          {contributions && <p>{JSON.stringify(contributions)}</p>}
+        </div>
+        </div>
       </DragDropContext>
-      {contributions && <p>{JSON.stringify(contributions)}</p>}
-      {total && <p>{total}</p>}
+      
+      
     </div>
   )
 }
