@@ -7,13 +7,19 @@ export default function Participants(props){
         console.log({ name: getValues('participantName')});
         props.addParticipant({ name: getValues('participantName')});
     }
+    useEffect(()=>{
+        for (const [key, value] of Object.entries(props.contributions)) {
+            console.log(`${key}: ${value}`);
+          }
+    },[props.contributions]);
     useEffect(() => {
         if (formState.isSubmitSuccessful) {
           reset({ participantName: '' });
         }
       }, [formState, reset]);
     return (
-    <div className="p-2 self-start bg-gray-800 rounded-lg">
+    <>
+    <div className="p-2 bg-gray-800 rounded-lg">
             <Droppable droppableId="participants">
                 {(provided, snapshot) => (
                     <ul {...provided.droppableProps} ref={provided.innerRef}>
@@ -29,9 +35,16 @@ export default function Participants(props){
                 )}
             </Droppable>
             <form onSubmit={handleSubmit(formSubmissionHandler)}>
-                <input autocomplete="off" className="ml-2 p-2 rounded-lg shadow-md hover:shadow-xl" type="text" {...register("participantName", { required: true, pattern: /^[A-Za-z0-9 ]+$/i })}/>
+                <input autoComplete="off" className="ml-2 p-2 rounded-lg shadow-md hover:shadow-xl" type="text" {...register("participantName", { required: true, pattern: /^[A-Za-z0-9 ]+$/i })}/>
                 <button className="ml-2 bg-green-700 p-2 rounded-lg hover:bg-green-600 hover:shadow-xl text-white" type="submit">Add Participant</button>
             </form>
     </div>
+    <div className="bg-gray-800 rounded-lg p-2 text-2xl text-white">
+        {<p>Total Bill Amount: {props.total}</p>}
+    </div>
+    <div className="bg-gray-700 rounded-lg p-2 text-2xl text-white">
+        {props.contributions && Object.keys(props.contributions).map((key, index) => <p key={key}>{key}'s required contribution is ₹{props.contributions[key]}/-</p>)}
+    </div>
+    </>
     );
 }

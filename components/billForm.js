@@ -16,13 +16,14 @@ export default function BillForm(props) {
       }, [watchBillItems]);
       return (
         <div className="bg-gray-700 rounded-lg">
+          <p className="p-4 text-2xl text-white">Split a New Bill:</p>
         <form>         
           <ul>
             {controlledFields.map((item, billIndex) => (
-                <li key={item.id}>
-                  <Controller render={({ field }) => <input placeholder="Item Name" autocomplete="off" className="p-2 rounded-lg shadow-md hover:shadow-xl mt-2 ml-2" {...field} />} name={`billItems.${billIndex}.itemName`} control={control}/>
-                  <Controller render={({ field }) => <input placeholder="Quantity" autocomplete="off" className="p-2 rounded-lg shadow-md hover:shadow-xl ml-2 mt-2" {...field} />} name={`billItems.${billIndex}.quantity`} control={control}/>
-                  <Controller render={({ field }) => <input placeholder="Unit Price" autocomplete="off" className="p-2 rounded-lg shadow-md hover:shadow-xl ml-2 mt-2" {...field} />} name={`billItems.${billIndex}.unitPrice`} control={control}/>
+                <li className="bg-gray-800 rounded-lg m-2" key={item.id}>
+                  <Controller render={({ field }) => <input placeholder="Item Name" autoComplete="off" className="p-2 rounded-lg shadow-md hover:shadow-xl mt-2 ml-2" {...field} />} name={`billItems.${billIndex}.itemName`} control={control}/>
+                  <Controller render={({ field }) => <input type="number" placeholder="Quantity" autoComplete="off" className="p-2 rounded-lg shadow-md hover:shadow-xl ml-2 mt-2" {...field} />} name={`billItems.${billIndex}.quantity`} control={control}/>
+                  <Controller render={({ field }) => <input type="number" placeholder="Unit Price" autoComplete="off" className="p-2 rounded-lg shadow-md hover:shadow-xl ml-2 mt-2" {...field} />} name={`billItems.${billIndex}.unitPrice`} control={control}/>
                   <button className="bg-red-500 p-2 rounded-lg hover:bg-red-600 hover:shadow-xl ml-2 mt-2 mb-2 text-white" type="button" onClick={() => remove(billIndex)}>Delete</button>
                   <Droppable droppableId={""+billIndex}>
                     {(provided, snapshot) => (
