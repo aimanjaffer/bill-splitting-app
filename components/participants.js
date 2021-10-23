@@ -40,7 +40,7 @@ export default function Participants(props){
             </form>
     </div>
     <div className="bg-gray-800 rounded-lg p-2 text-2xl text-white">
-        {<p>Total Bill Amount: {props.total}</p>}
+        {<p>Total Bill Amount: ₹{props.total}/-</p>}
     </div>
     <div className="bg-gray-700 rounded-lg p-2 text-2xl text-white">
         {props.contributions && Object.keys(props.contributions).map((key, index) => <p key={key}>{key}'s required contribution is ₹{props.contributions[key]}/-</p>)}
