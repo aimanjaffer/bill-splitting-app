@@ -153,7 +153,7 @@ const handleOnDragEnd = result => {
         <div className="font-serif text-7xl">SplitsBill</div>
       </div>
       <DragDropContext onDragEnd={handleOnDragEnd}>
-        <div className="grid grid-cols-2 gap-1">
+        <div className="grid md:grid-cols-2 gap-1">
         {windowReady && bill && <BillForm bill={bill} setBill={changeBill}/>}
         {windowReady && participants && <Participants participants={participants} addParticipant={addParticipant} total={total} contributions={contributions}/>}
         </div>
