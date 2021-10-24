@@ -13,6 +13,10 @@ export default function Home() {
   useEffect(() => {
       setWindowReady(true);
   }, []);
+  useEffect( () => { 
+    let body = document.querySelector("body");
+    body.className= "bg-gradient-to-r from-blue-400 via-purple-400 to-red-400";
+  } );
   useEffect(() => {
     //console.log("bill changed ", bill);
     let sum = bill.map((item) => item.quantity * item.unitPrice).reduce((prev, current) => prev + current, 0);
