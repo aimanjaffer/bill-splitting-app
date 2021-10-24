@@ -20,6 +20,7 @@ export default function Participants(props){
     return (
     <>
     <div className="p-2 bg-gray-800 rounded-lg">
+        <p className="text-2xl text-green-500 rounded-lg p-2">{props.participants.length > 0 ? "Participants:" : "No Participants Added Yet!"}</p>
             <Droppable droppableId="participants">
                 {(provided, snapshot) => (
                     <ul {...provided.droppableProps} ref={provided.innerRef}>
@@ -38,9 +39,10 @@ export default function Participants(props){
                 <input autoComplete="off" className="ml-2 p-2 rounded-lg shadow-md hover:shadow-xl" type="text" {...register("participantName", { required: true, pattern: /^[A-Za-z0-9 ]+$/i })}/>
                 <button className="ml-2 bg-green-700 p-2 rounded-lg hover:bg-green-600 hover:shadow-xl text-white" type="submit">Add Participant</button>
             </form>
+            {(props.participants.length) > 0 && <p className="text-yellow-500 rounded-lg p-2">Drag and Drop Participants into the relevant bill items</p>}
     </div>
     <div className="bg-gray-800 rounded-lg p-2 text-2xl text-white">
-        {<p>Total Bill Amount: ₹{props.total}/-</p>}
+        <p>Total Bill Amount: ₹{props.total}/-</p>
     </div>
     <div className="bg-gray-700 rounded-lg p-2 text-2xl text-white">
         {props.contributions && Object.keys(props.contributions).map((key, index) => <p key={key}>{key}'s required contribution is ₹{props.contributions[key]}/-</p>)}

@@ -52,7 +52,12 @@ export default function BillForm(props) {
             <button className="bg-blue-500 p-2 rounded-lg hover:bg-blue-600 hover:shadow-xl mt-2 ml-2 mb-2 text-white" type="button" onClick={() => append({ itemName: "", quantity: "", unitPrice: "", participants:[] })}>
               Add Row
             </button>
-            <button className="bg-blue-500 p-2 rounded-lg hover:bg-blue-600 hover:shadow-xl mt-2 ml-2 mb-2 text-white" type="button" onClick={() => setValue("billItems", [] )}>Reset Bill</button>
+            <button className="bg-blue-500 p-2 rounded-lg hover:bg-blue-600 hover:shadow-xl mt-2 ml-2 mb-2 text-white" type="button" onClick={() => setValue("billItems", [
+    { itemName: "", quantity: "", unitPrice: "", participants:[] },
+    { itemName: "", quantity: "", unitPrice: "", participants:[] },
+    { itemName: "", quantity: "", unitPrice: "", participants:[] },
+    { itemName: "", quantity: "", unitPrice: "", participants:[] }
+  ] )}>Reset Bill</button>
           </section>
         </form>
         </div>

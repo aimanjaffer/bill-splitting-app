@@ -7,7 +7,12 @@ import BillForm from '../components/billForm';
 export default function Home() {
   const [windowReady, setWindowReady] = useState(false);
   const [participants, setParticipants] = useState([]);
-  const [bill, setBill] = useState([]);
+  const [bill, setBill] = useState([
+    { itemName: "", quantity: "", unitPrice: "", participants:[] },
+    { itemName: "", quantity: "", unitPrice: "", participants:[] },
+    { itemName: "", quantity: "", unitPrice: "", participants:[] },
+    { itemName: "", quantity: "", unitPrice: "", participants:[] }
+  ]);
   const [total, setTotal] = useState(0);
   const [contributions, setContributions] = useState({});
   useEffect(() => {
@@ -141,7 +146,7 @@ const handleOnDragEnd = result => {
   return (
     <div>
       <Head>
-        <title>Split-EZ</title>
+        <title>SplitsBill</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-row justify-center mt-4 mb-6">
